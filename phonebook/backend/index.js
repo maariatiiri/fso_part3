@@ -1,5 +1,6 @@
 const express = require('express')
 const morgan = require('morgan')
+const app = express()
 
 morgan.token('body', function (req, res) { 
     if (req.method==='POST') {
