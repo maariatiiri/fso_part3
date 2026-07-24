@@ -33,7 +33,7 @@ else {
 
   const person = new Person({
     name: newName,
-    number: newNumber,
+    number: newNumber
   })
 
   person.save().then(result => {
