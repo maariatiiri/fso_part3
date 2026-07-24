@@ -31,12 +31,12 @@ else {
   const newName = process.argv[3]
   const newNumber = process.argv.length === 5 ? process.argv[4] : ""
 
-  const note = new Person({
+  const person = new Person({
     name: newName,
     number: newNumber,
   })
 
-  note.save().then(result => {
+  person.save().then(result => {
     console.log(`added ${newName} number ${newNumber} to phonebook`)
     mongoose.connection.close()
   })
