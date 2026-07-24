@@ -46,8 +46,10 @@ app.get('/api/persons', (request, response) => {
 })
 
 app.get('/info', (request, response) => {
-    const info = `<p>Phonebook has info for ${persons.length} people </p> <p> ${Date(Date.now())}</p>`
+  Person.find({}).then(people => {
+    const info = `<p>Phonebook has info for ${people.length} people </p> <p> ${Date(Date.now())}</p>`
     response.send(info)
+  })
 })
 
 app.get('/api/persons/:id', (request, response, next) => {
@@ -63,7 +65,7 @@ app.get('/api/persons/:id', (request, response, next) => {
 })
 
 app.delete('/api/persons/:id', (request, response, next) => {
-    Note.findByIdAndDelete(request.params.id)
+    Person.findByIdAndDelete(request.params.id)
       .then(result => {
         response.status(204).end()
       })
@@ -89,6 +91,22 @@ app.post('/api/persons', (request, response) => {
   person.save().then( savedPerson => {
       response.json(savedPerson)
   })
+})
+
+app.put('/api/persons/:id', (request, response, next) => {
+  const {name, number} = request.body
+  Person.findById(request.params.id)
+    .then( person => {
+      if (!person) {
+        return response.status(404).end()
+      }
+      person.name=name
+      person.number=number
+      return person.save().then(updatedPerson => {
+        response.json(updatedPerson)
+      })
+    })
+    .catch(error => next(error))
 })
 
 const unknownEndpoint = (request, response) => {
